@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="منصة دراسة التمريض — مواد، ملخصات، اختبارات، ومؤقت بومودورو">
+    <title>منصه مودرن رجاك| Nursing Study Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- PWA Manifest - disabled for file:// protocol -->
+    <!-- <link rel="manifest" href="manifest.json"> -->
+    
+    <!-- Theme and App Icons -->
+    <meta name="theme-color" content="#0f4c75">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="منصة التمريض">
+    <meta name="application-name" content="منصة دراسة التمريض">
+    <meta name="msapplication-TileColor" content="#0f4c75">
+    <meta name="msapplication-config" content="browserconfig.xml">
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:title" content="منصة دراسة التمريض">
+    <meta property="og:description" content="منصة تعليمية احترافية لطلاب التمريض مع نظام تتبع التقدم">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ar_AR">
+    <meta property="og:site_name" content="منصة دراسة التمريض">
+    
+    <!-- Security and Performance -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <!-- X-Frame-Options removed - only works via HTTP headers -->
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    
+    <!-- Preload Critical Resources -->
+    <link rel="preload" href="style.css" as="style">
+    <link rel="preload" href="script.js" as="script">
+    <!-- Audio preload removed - not supported in all browsers -->
+    
+    <!-- DNS Prefetch -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+</head>
+
+<body>
+
+    <a href="#main-content" class="skip-link">تخطّي إلى المحتوى الرئيسي</a>
+
+    <header class="site-header">
+        <nav class="nav-bar" aria-label="التنقل الرئيسي">
+            <a href="#" class="nav-brand" onclick="event.preventDefault(); location.reload();">
+                <span class="nav-brand__mark" aria-hidden="true"></span>
+                <span class="nav-brand__text">منصه مودرن رجاك</span>
+            </a>
+            <div class="nav-end">
+                <ul class="nav-links">
+                    <li><a href="#" onclick="event.preventDefault(); location.reload();">الرئيسية</a></li>
+                    <li><a href="#timerSection">مؤقت</a></li>
+                    <li><a href="#" onclick="event.preventDefault(); showProgress();">التقدم</a></li>
+                    <li><a href="#admin-anchor">دخول المعلّم</a></li>
+                    <li><a href="#superAdminLoginSection" style="color: #f59e0b;">👑 المدير العام</a></li>
+                </ul>
+                <button type="button" class="theme-toggle" id="themeToggle" aria-label="تبديل المظهر"
+                    title="فاتح / داكن">
+                    <span class="theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true">☀</span>
+                    <span class="theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true">☽</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main id="main-content" class="main-layout" tabindex="-1">
+
+        <section class="hero" aria-labelledby="hero-title">
+            <div class="hero__inner">
+                <p class="hero__badge">تمريض · دراسة · تقييم</p>
+                <h1 id="hero-title">منصه دراسه مودرن رجاك</h1>
+                <p class="hero__lead">محتوى منظم، اختبارات تفاعلية، ومؤقت بومودورو لتركيز أفضل أثناء المراجعة.</p>
+                <p class="hero__en" lang="en" dir="ltr">Nursing Study Platform — learn with focus.</p>
+            </div>
+        </section>
+
+        <section id="userSetup" class="card card--setup setup-card" aria-labelledby="setup-title">
+            <div class="card__head">
+                <h2 id="setup-title" class="card__title">تسجيل دخول الطالب</h2>
+                <p class="card__subtitle">أدخل بياناتك للبدء في الدراسة</p>
+            </div>
+            <form id="setupForm" class="form-grid" novalidate>
+                <div class="field field--full">
+                    <label class="field-label" for="usernameInput">اسم المستخدم</label>
+                    <input class="field-input" type="text" id="usernameInput" name="username" required
+                        autocomplete="username" placeholder="أدخل اسم المستخدم">
+                </div>
+                <div class="field field--full">
+                    <label class="field-label" for="passwordInput">كلمة المرور</label>
+                    <div class="password-box">
+                        <input class="field-input" type="password" id="passwordInput" name="password" required
+                            autocomplete="current-password" placeholder="أدخل كلمة المرور">
+                        <button type="button" class="toggle-password" onclick="togglePassword('passwordInput')"
+                            aria-label="إظهار أو إخفاء كلمة المرور">👁</button>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn--primary btn--block">
+                    <span>🚀 دخول الطالب</span>
+                </button>
+            </form>
+            <div id="loginError" class="error-message" style="display: none; margin-top: 15px; color: #e74c3c;"></div>
+        </section>
+
+        <section id="welcomeMsg" class="card card--welcome container" style="display:none;" aria-live="polite">
+        </section>
+
+        <section id="subjects" class="section-subjects container" style="display:none;"
+            aria-labelledby="subjects-heading">
+            <div class="section-head">
+                <h2 id="subjects-heading" class="section-head__title">المواد الدراسية</h2>
+                <p class="section-head__desc">اختر المادة لعرض الملخصات والوسائط والاختبار</p>
+            </div>
+            <div id="subjectsContainer" class="cards-grid"></div>
+        </section>
+
+        <section id="progressSection" class="card container" style="display:none;" aria-labelledby="progress-title">
+            <div class="section-head">
+                <h2 id="progress-title" class="section-head__title">تقدمك الدراسي</h2>
+                <p class="section-head__desc">إحصائيات وأداء في المواد المختلفة</p>
+            </div>
+            <div id="progressContent" class="progress-grid">
+                <div class="progress-card">
+                    <h3>إجمالي وقت الدراسة</h3>
+                    <div class="progress-stat" id="totalStudyTime">0 ساعة</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="studyTimeBar" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div class="progress-card">
+                    <h3>المواد المكتملة</h3>
+                    <div class="progress-stat" id="completedSubjects">0 / 0</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="subjectsBar" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div class="progress-card">
+                    <h3>متوسط الدرجات</h3>
+                    <div class="progress-stat" id="averageScore">0%</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="scoreBar" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div class="progress-card">
+                    <h3>أيام المتابعة</h3>
+                    <div class="progress-stat" id="streakDays">0 يوم</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="streakBar" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Advanced Analytics Section -->
+            <div class="analytics-section">
+                <h3 class="section-head__title">تحليلات متقدمة</h3>
+                
+                <div class="analytics-tabs">
+                    <button type="button" class="analytics-tab active" onclick="showAnalyticsTab('studyTime')">وقت الدراسة</button>
+                    <button type="button" class="analytics-tab" onclick="showAnalyticsTab('progress')">التقدم</button>
+                    <button type="button" class="analytics-tab" onclick="showAnalyticsTab('performance')">الأداء</button>
+                </div>
+                
+                <div id="studyTimeChart" class="analytics-content active"></div>
+                <div id="progressChart" class="analytics-content"></div>
+                <div id="performanceChart" class="analytics-content"></div>
+            </div>
+            
+            <div class="progress-actions">
+                <button type="button" class="btn btn--secondary" onclick="exportProgress()">تصدير التقرير</button>
+                <button type="button" class="btn btn--primary" onclick="exportAnalytics()">تصدير التحليلات</button>
+                <button type="button" class="btn btn--ghost" onclick="resetProgress()">إعادة تعيين</button>
+            </div>
+        </section>
+
+        <section id="materialPage" class="card card--material container" style="display:none;"
+            aria-labelledby="materialTitle">
+            <nav id="materialBreadcrumb" class="breadcrumb" aria-label="مسار الصفحة" hidden></nav>
+            <h2 id="materialTitle" class="material-page-title"></h2>
+            <div id="materialContent"></div>
+            <button type="button" class="btn btn--secondary back-subjects-btn" onclick="backToSubjects()">← العودة إلى
+                المواد</button>
+        </section>
+
+        <section class="card card--timer timer" id="timerSection" aria-labelledby="timer-heading">
+            <h2 id="timer-heading" class="visually-hidden">مؤقت بومودورو</h2>
+            <p class="timer__period" id="period">وقت الدراسة</p>
+            <label class="timer__label">المدة (بالدقائق)
+                <input class="field-input field-input--inline" type="number" id="userTime" value="25" min="1">
+            </label>
+            <p class="timer__clock" id="time">25:00</p>
+            <div class="timer-buttons">
+                <button type="button" class="btn btn--timer" id="startBtn">بدء</button>
+                <button type="button" class="btn btn--timer btn--timer-muted" id="pauseBtn">إيقاف مؤقت</button>
+                <button type="button" class="btn btn--timer btn--timer-muted" id="resetBtn">إعادة</button>
+            </div>
+            <label class="timer__label">نوع الاستراحة
+                <select class="field-input field-input--inline" id="breakType">
+                    <option value="short">قصيرة (5 دقائق)</option>
+                    <option value="long">طويلة (15 دقيقة)</option>
+                </select>
+            </label>
+        </section>
+
+        <section id="admin-anchor" class="anchor-offset"></section>
+        <section id="adminLoginSection" class="card card--admin-login" aria-labelledby="admin-login-title">
+            <div class="card__head">
+                <h2 id="admin-login-title" class="card__title">دخول معلّم المادة</h2>
+                <p class="card__subtitle">بيانات الدخول الخاصة بمقرّرك كما حددتها الإدارة</p>
+            </div>
+            <div class="form-grid">
+                <div class="field">
+                    <label class="field-label" for="adminName">اسم المعلّم (كما في النظام)</label>
+                    <input class="field-input" type="text" id="adminName" placeholder="اسم المعلّم"
+                        autocomplete="username">
+                </div>
+                <div class="field">
+                    <label class="field-label" for="adminPass">كلمة المرور</label>
+                    <div class="password-box">
+                        <input class="field-input" type="password" id="adminPass" placeholder="••••••••"
+                            autocomplete="current-password">
+                        <button type="button" class="toggle-password" onclick="togglePassword('adminPass')"
+                            aria-label="إظهار أو إخفاء كلمة المرور">👁</button>
+                    </div>
+                </div>
+                <button type="button" class="btn btn--primary btn--block" onclick="loginAdmin()">🔐 دخول لوحة التحكم</button>
+                <p id="loginMsg" class="form-msg" role="status" aria-live="polite"></p>
+            </div>
+        </section>
+
+        <section id="superAdminLoginSection" class="card card--admin-login" aria-labelledby="super-admin-login-title">
+            <div class="card__head">
+                <h2 id="super-admin-login-title" class="card__title">👑 دخول المدير العام</h2>
+                <p class="card__subtitle">وصول كامل إلى جميع المواد والمعلمين والبيانات</p>
+            </div>
+            <div class="form-grid">
+                <div class="field">
+                    <label class="field-label" for="superAdminName">اسم المدير العام</label>
+                    <input class="field-input" type="text" id="superAdminName" placeholder="أدخل اسم المدير العام"
+                        autocomplete="username">
+                </div>
+                <div class="field">
+                    <label class="field-label" for="superAdminPass">كلمة المرور</label>
+                    <div class="password-box">
+                        <input class="field-input" type="password" id="superAdminPass" placeholder="••••••••"
+                            autocomplete="current-password">
+                        <button type="button" class="toggle-password" onclick="togglePassword('superAdminPass')"
+                            aria-label="إظهار أو إخفاء كلمة المرور">👁</button>
+                </div>
+                <button type="button" class="btn btn--primary btn--block" onclick="loginSuperAdmin()">👑 دخول لوحة المدير العام</button>
+                <p id="superAdminLoginMsg" class="form-msg" role="status" aria-live="polite"></p>
+            </div>
+        </section>
+
+        <!-- Super Admin Panel -->
+        <section id="superAdminPanel" class="admin-dashboard" style="display:none;" aria-labelledby="superAdminPanelTitle">
+            <header class="admin-dashboard__header">
+                <div class="admin-dashboard__head-text">
+                    <h2 id="superAdminPanelTitle" class="admin-dashboard__title">Panel Direktur Jenderal</h2>
+                    <p class="admin-dashboard__tagline">Akses penuh ke semua data siswa, materi, dan hasil ujian</p>
+                </div>
+                <div class="admin-dashboard__actions">
+                    <button type="button" class="btn btn--ghost" onclick="location.reload()">Keluar dan Refresh</button>
+                </div>
+            </header>
+
+            <!-- Global Statistics -->
+            <div class="admin-stats">
+                <h3 class="admin-stats__title">Statistik Global</h3>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h4>Total Siswa</h4>
+                        <span id="totalStudentsCount" class="stat-number">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Total Guru</h4>
+                        <span id="totalTeachersCount" class="stat-number">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Total Materi</h4>
+                        <span id="totalMaterialsCount" class="stat-number">0</span>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Total Tes</h4>
+                        <span id="totalTestsCount" class="stat-number">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- All Students Progress -->
+            <section class="admin-section">
+                <h3 class="admin-section__title">Progress Semua Siswa</h3>
+                <div id="allStudentsProgress" class="students-progress-container">
+                    <!-- Progress data will be loaded here -->
+                </div>
+            </section>
+
+            <!-- All Test Results -->
+            <section class="admin-section">
+                <h3 class="admin-section__title">Semua Hasil Tes</h3>
+                <div id="allTestResults" class="test-results-container">
+                    <!-- Test results will be loaded here -->
+                </div>
+            </section>
+
+            <!-- All Materials -->
+            <section class="admin-section">
+                <h3 class="admin-section__title">Semua Materi</h3>
+                <div id="materialsList" class="materials-list">
+                    <!-- Materials will be loaded here -->
+                </div>
+            </section>
+        </section>
+
+        <section id="adminPanel" class="admin-dashboard" style="display:none;" aria-labelledby="panelTitle">
+            <header class="admin-dashboard__header">
+                <div class="admin-dashboard__head-text">
+                    <h2 id="panelTitle" class="admin-dashboard__title">لوحة تحكم المادة</h2>
+                    <p class="admin-dashboard__tagline" id="adminTagline">إدارة المحتوى والاختبارات لطلابك</p>
+                </div>
+                <div class="admin-dashboard__actions">
+                    <button type="button" class="btn btn--ghost" onclick="location.reload()">خروج وتحديث الصفحة</button>
+                </div>
+            </header>
+
+            <div id="adminStats" class="admin-stats" hidden aria-label="إحصائيات المادة الحالية"></div>
+
+            <div class="admin-grid">
+                <article class="admin-card">
+                    <h3 class="admin-card__title">ملخص نصي</h3>
+                    <p class="admin-card__hint">يظهر للطلاب داخل صفحة المادة</p>
+                    <textarea class="field-input" id="summaryContent" rows="4" placeholder="اكتب الملخص هنا"></textarea>
+                    <div class="inline-options">
+                        <label class="check-label"><input type="checkbox" id="summaryTimerCheck"> تفعيل تذكير
+                            زمني</label>
+                        <input class="field-input field-input--xs" type="number" id="summaryTimerValue"
+                            placeholder="القيمة">
+                        <select class="field-input field-input--xs" id="summaryTimerUnit">
+                            <option value="minutes">دقائق</option>
+                            <option value="hours">ساعات</option>
+                            <option value="days">أيام</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn--primary" onclick="addSummary()">📝 إضافة الملخص</button>
+                </article>
+
+                <article class="admin-card">
+                    <h3 class="admin-card__title">رفع فيديو</h3>
+                    <p class="admin-card__hint">رفع فيديو بدون أي قيود على الحجم</p>
+                    <input class="field-input" type="file" id="videoUpload" accept="video/*">
+                    <div class="inline-options">
+                        <label class="check-label"><input type="checkbox" id="videoTimerCheck"> تذكير زمني</label>
+                        <input class="field-input field-input--xs" type="number" id="videoTimerValue"
+                            placeholder="الوقت">
+                        <select class="field-input field-input--xs" id="videoTimerUnit">
+                            <option value="minutes">دقائق</option>
+                            <option value="hours">ساعات</option>
+                            <option value="days">أيام</option>
+                        </select>
+                    </div>
+                    <div class="video-info">
+                        <p class="info-text"> يدعم جميع صيغ الفيديو الشائعة (MP4, AVI, MOV, etc.)</p>
+                        <p class="info-text">🚀 رفع سريع بدون قيود</p>
+                        <p class="info-text">💾 التخزين يعتمد على مساحة جهازك</p>
+                    </div>
+                    <button type="button" class="btn btn--primary" onclick="addVideo()">📹 رفع الفيديو</button>
+                </article>
+
+                <article class="admin-card">
+                    <h3 class="admin-card__title">رفع PDF</h3>
+                    <input class="field-input" type="file" id="pdfUpload" accept=".pdf,application/pdf">
+                    <button type="button" class="btn btn--primary" onclick="addPDF()">📄 رفع PDF</button>
+                </article>
+
+                <article class="admin-card">
+                    <h3 class="admin-card__title">رفع ملف صوتي</h3>
+                    <input class="field-input" type="file" id="voiceUpload" accept="audio/*">
+                    <button type="button" class="btn btn--primary" onclick="addVoice()">🎤 رفع الصوت</button>
+                </article>
+
+                <article class="admin-card admin-card--wide" id="testSection">
+                    <h3 class="admin-card__title">بنك الأسئلة والاختبار</h3>
+                    
+                    <!-- Test Settings -->
+                    <div class="test-settings">
+                        <div class="field">
+                            <label class="field-label" for="testDuration">مدة الاختبار (بالدقائق)</label>
+                            <input class="field-input field-input--narrow" type="number" id="testDuration" min="1" max="180" placeholder="30">
+                            <small class="field-hint">اترك فارغاً لاختبار بدون وقت محدد</small>
+                        </div>
+                        <div class="field">
+                            <label class="field-label" for="testTitle">عنوان الاختبار</label>
+                            <input class="field-input" type="text" id="testTitle" placeholder="اختبار الفصل الأول">
+                        </div>
+                    </div>
+                    
+                    <div class="form-grid form-grid--tight">
+                        <div class="field">
+                            <label class="field-label" for="questionType">نوع السؤال</label>
+                            <select class="field-input" id="questionType">
+                                <option value="mcq">اختيار من متعدد</option>
+                                <option value="tf">صح / خطأ</option>
+                                <option value="image">سؤال بصري (مع صورة)</option>
+                            </select>
+                        </div>
+                        <div class="field field--full">
+                            <label class="field-label" for="questionText">نص السؤال</label>
+                            <input class="field-input" type="text" id="questionText" placeholder="اكتب السؤال هنا">
+                        </div>
+                        <div class="field field--full" id="imageUploadWrap" style="display:none;">
+                            <label class="field-label" for="questionImage">صورة السؤال</label>
+                            <input class="field-input" type="file" id="questionImage" accept="image/*">
+                            <div class="image-preview" id="imagePreview" style="display:none;">
+                                <img id="previewImg" src="" alt="معاينة الصورة" style="max-width: 200px; max-height: 150px; margin-top: 10px; border-radius: 8px;">
+                                <button type="button" class="btn btn--sm btn--ghost" onclick="removeImage()" style="margin-top: 5px;">إزالة الصورة</button>
+                            </div>
+                        </div>
+                        <div class="field field--full" id="optionsWrap">
+                            <span class="field-label">الخيارات (للاختيار من متعدد)</span>
+                            <div id="optionsDiv" class="options-slot"></div>
+                        </div>
+                        <div class="field field--full">
+                            <label class="field-label" for="correctAnswer">الإجابة الصحيحة (للاختيار من متعدد — نص مطابق
+                                لأحد الخيارات)</label>
+                            <input class="field-input" type="text" id="correctAnswer" placeholder="الإجابة الصحيحة">
+                        </div>
+                        <div class="btn-row">
+                            <button type="button" class="btn btn--secondary" onclick="addQuestion()">➕ إضافة سؤال</button>
+                            <button type="button" class="btn btn--primary" onclick="saveTest()">💾 حفظ الاختبار</button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="admin-card admin-card--wide">
+                    <div class="admin-card__toolbar">
+                        <h3 class="admin-card__title">نتائج الطلاب</h3>
+                        <div class="admin-card__actions">
+                            <button type="button" class="btn btn--ghost btn--sm" onclick="loadStudentsTable()">Refresh</button>
+                            <button type="button" class="btn btn--primary btn--sm" onclick="exportAllStudentsPDF()">Export PDF</button>
+                            <button type="button" class="btn btn--secondary btn--sm" onclick="exportAllStudentsExcel()">Export Excel</button>
+                        </div>
+                    <div class="student-filters">
+                        <div class="filter-row">
+                            <div class="filter-group">
+                                <label class="filter-label">بحث بالاسم</label>
+                                <input type="text" id="studentSearch" class="field-input" placeholder="ابحث عن طالب..." onkeyup="searchAllStudents()">
+                            </div>
+                            <div class="filter-group">
+                                <label class="filter-label">الصف</label>
+                                <select id="gradeFilter" class="field-input" onchange="filterStudents()">
+                                    <option value="">جميع الصفوف</option>
+                                    <option value="first">الصف الأول</option>
+                                    <option value="second">الصف الثاني</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label class="filter-label">Class</label>
+                                <input type="text" id="classFilter" class="field-input" placeholder="ابحث عن Class..." onkeyup="filterStudents()">
+                            </div>
+                            <div class="filter-group">
+                                <label class="filter-label">حالة الأداء</label>
+                                <select id="performanceFilter" class="field-input" onchange="filterStudents()">
+                                    <option value="">جميع المستويات</option>
+                                    <option value="excellent">ممتاز (90%+)</option>
+                                    <option value="good">جيد (75-89%)</option>
+                                    <option value="average">متوسط (60-74%)</option>
+                                    <option value="poor">ضعيف (أقل من 60%)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Statistics Summary -->
+                    <div class="students-summary">
+                        <div class="summary-card">
+                            <div class="summary-value" id="totalStudentsCount">0</div>
+                            <div class="summary-label">إجمالي الطلاب</div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="summary-value" id="activeStudentsCount">0</div>
+                            <div class="summary-label">نشطون اليوم</div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="summary-value" id="averageScore">0%</div>
+                            <div class="summary-label">متوسط الدرجات</div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="summary-value" id="completionRate">0%</div>
+                            <div class="summary-label">معدل الإنجاز</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Advanced Students Table -->
+                    <div class="table-advanced-container">
+                        <div class="table-wrapper">
+                            <table class="data-table data-table--advanced" id="studentsTable">
+                                <thead>
+                                    <tr>
+                                        <th class="table-header--sortable" onclick="sortTable('name')">
+                                            اسم الطالب
+                                            <span class="sort-icon">↕</span>
+                                        </th>
+                                        <th class="table-header--sortable" onclick="sortTable('className')">
+                                            Class
+                                            <span class="sort-icon">?</span>
+                                        </th>
+                                        <th class="table-header--sortable" onclick="sortTable('score')">
+                                            Test Score
+                                            <span class="sort-icon">?</span>
+                                        </th>
+                                        <th class="table-header--sortable" onclick="sortTable('grade')">
+                                            Progress Level
+                                            <span class="sort-icon">?</span>
+                                        </th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="studentsBody">
+                                    <!-- Students will be loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Pagination -->
+                        <div class="table-pagination">
+                            <div class="pagination-info">
+                                <span>عرض <span id="showingFrom">0</span>-<span id="showingTo">0</span> من <span id="totalRecords">0</span> طالب</span>
+                            </div>
+                            <div class="pagination-controls">
+                                <button type="button" class="btn btn--sm" onclick="previousPage()" id="prevBtn" disabled>السابق</button>
+                                <div class="page-numbers" id="pageNumbers"></div>
+                                <button type="button" class="btn btn--sm" onclick="nextPage()" id="nextBtn">التالي</button>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- Student Details Modal -->
+                <div id="studentModal" class="modal" style="display: none;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>تفاصيل الطالب</h3>
+                            <button type="button" class="modal-close" onclick="closeStudentModal()">×</button>
+                        </div>
+                        <div class="modal-body" id="studentModalBody">
+                            <!-- Student details will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <p class="site-footer__copy"> 2026 منصة دراسة التمريض · إعداد الطالبة سلمى أحمد</p>
+            <p class="site-footer__note">Nursing Study Platform</p>
+        </div>
+    </footer>
+
+    <div id="toastRoot" class="toast-root" aria-live="polite" aria-relevant="additions"></div>
+
+    <!-- PWA Install Prompt -->
+    <div id="installPrompt" class="install-prompt" style="display: none;">
+        <div class="install-prompt__content">
+            <h3>تثبيت التطبيق</h3>
+            <p>قم بتثبيت منصة الدراسة على جهازك للوصول السريع والعمل بدون اتصال</p>
+            <div class="install-prompt__actions">
+                <button type="button" class="btn btn--primary" id="installBtn">تثبيت</button>
+                <button type="button" class="btn btn--ghost" id="installCancelBtn">لا الآن</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Service Worker disabled for file:// protocol -->
+    <!-- Will work when running on HTTP server -->
+
+    <!-- PWA Install Prompt -->
+    <script>
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            showInstallPrompt();
+        });
+
+        function showInstallPrompt() {
+            const installPrompt = document.getElementById('installPrompt');
+            if (installPrompt) {
+                installPrompt.style.display = 'flex';
+            }
+        }
+
+        document.getElementById('installBtn')?.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    console.log('User accepted the install prompt');
+                }
+                deferredPrompt = null;
+                hideInstallPrompt();
+            }
+        });
+
+        document.getElementById('installCancelBtn')?.addEventListener('click', () => {
+            hideInstallPrompt();
+        });
+
+        function hideInstallPrompt() {
+            const installPrompt = document.getElementById('installPrompt');
+            if (installPrompt) {
+                installPrompt.style.display = 'none';
+            }
+        }
+
+        // Hide install prompt after 30 seconds
+        setTimeout(() => {
+            hideInstallPrompt();
+        }, 30000);
+    </script>
+
+    <script src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="export_functions.js"></script>
+</body>
+
+</html>

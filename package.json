@@ -1,0 +1,54 @@
+{
+  "name": "nursing-study-platform",
+  "version": "2.0.0",
+  "description": "Professional nursing study platform with progress tracking and analytics",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "build": "echo 'Build completed'",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "docker:build": "docker build -t nursing-platform .",
+    "docker:run": "docker run -p 3000:3000 nursing-platform",
+    "docker:compose": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "logs": "docker-compose logs -f",
+    "health": "node healthcheck.js"
+  },
+  "keywords": [
+    "nursing",
+    "education",
+    "study",
+    "arabic",
+    "platform",
+    "progress-tracking",
+    "pomodoro",
+    "interactive"
+  ],
+  "author": "Salma Ahmed",
+  "license": "MIT",
+  "type": "commonjs",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "express": "^5.2.1",
+    "express-rate-limit": "^7.1.5",
+    "express-session": "^1.19.0",
+    "helmet": "^7.1.0",
+    "lowdb": "^7.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/username/nursing-study-platform.git"
+  },
+  "bugs": {
+    "url": "https://github.com/username/nursing-study-platform/issues"
+  },
+  "homepage": "https://github.com/username/nursing-study-platform#readme"
+}

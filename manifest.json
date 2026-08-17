@@ -1,0 +1,62 @@
+{
+  "name": "منصة دراسة التمريض",
+  "short_name": "منصة التمريض",
+  "description": "منصة تعليمية احترافية لطلاب التمريض مع نظام تتبع التقدم",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f0f4fa",
+  "theme_color": "#0f4c75",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "ar",
+  "dir": "rtl",
+  "categories": ["education", "medical", "productivity"],
+  "icons": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiByeD0iMjQiIGZpbGw9IiMwZjRjNzUiLz4KPHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik02MCAxMTBDOTMuMTM3IDExMCAxMjAgODMuMTM3IDEyMCA1MEMxMjAgMTYuODYzIDkzLjEzNy0xMCA2MC0xMEMyNi44NjMxIC0xMCAwIDE2Ljg2MyAwIDUwQzAgODMuMTM3IDI2Ljg2MzEgMTEwIDYwIDExMFoiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik00NSA0NUg3NVY3NUg0NVY0NVoiIGZpbGw9IiMwZjRjNzUiLz4KPHBhdGggZD0iTTU1IDU1SDY1VjY1SDU1VjU1WiIgZmlsbD0iIzBmNGM3NSIvPgo8L3N2Zz4KPHN2ZyB4PSIzNiIgeT0iMzYiIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiB2aWV3Qm94PSIwIDAgMTIwIDEyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHRleHQgeD0iNjAiIHk9IjY1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjQwIiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0id2hpdGUiPu9iY9uM2LPYqzwvdGV4dD4KPC9zdmc+Cjwvc3ZnPgo=",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiByeD0iNjQiIGZpbGw9IiMwZjRjNzUiLz4KPHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjMyMCIgdmlld0JveD0iMCAwIDMyMCAzMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xNjAgMjkwQzI0OC41MzMgMjkwIDMyMCAyMTguNTMzIDMyMCAxNjBDMzIwIDEwMS40NjcgMjQ4LjUzMyAzMCAxNjAgMzBDNzEuNDY3MyAzMCAwIDEwMS40NjcgMCAxNjBDMCAyMTguNTMzIDcxLjQ2NzMgMjkwIDE2MCAyOTBaIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMTIwIDEyMEgyMDBWMjAwSDEyMFYxMjBaIiBmaWxsPSIjMGY0Yzc1Ii8+CjxwYXRoIGQ9Ik0xNDAgMTQwSDE4MFYxODBIMTQwVjE0MFoiIGZpbGw9IiMwZjRjNzUiLz4KPC9zdmc+CjxzdmcgeD0iOTYiIHk9Ijk2IiB3aWR0aD0iMzIwIiBoZWlnaHQ9IjMyMCIgdmlld0JveD0iMCAwIDMyMCAzMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+Cjx0ZXh0IHg9IjE2MCIgeT0iMTgwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEwMCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIj7vYmPbjNiz2Kk8L3RleHQ+Cjwvc3ZnPgo8L3N2Zz4K",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjU2OCIgdmlld0JveD0iMCAwIDMyMCA1NjgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMjAiIGhlaWdodD0iNTY4IiBmaWxsPSIjZjBmNGZhIi8+CjxyZWN0IHg9IjE2IiB5PSIxNiIgd2lkdGg9IjI4OCIgaGVpZ2h0PSI1MzYiIHJ4PSIxMiIgZmlsbD0id2hpdGUiLz4KPHJlY3QgeD0iMTYiIHk9IjgwIiB3aWR0aD0iMjg4IiBoZWlnaHQ9IjYwIiByeD0iOCIgZmlsbD0iIzBmNGM3NSIvPgo8dGV4dCB4PSIxNjAiIHk9IjExNSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIyNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIj7vYmPbjNiz2Kk8L3RleHQ+CjxyZWN0IHg9IjMyIiB5PSIxNjAiIHdpZHRoPSIyNTYiIGhlaWdodD0iODAiIHJ4PSI4IiBmaWxsPSIjZTJlOGYwIi8+CjxyZWN0IHg9IjMyIiB5PSIyNjAiIHdpZHRoPSIxMjAiIGhlaWdodD0iODAiIHJ4PSI4IiBmaWxsPSIjZDRhMDE3Ii8+CjxyZWN0IHg9IjE2OCIgeT0iMjYwIiB3aWR0aD0iMTIwIiBoZWlnaHQ9IjgwIiByeD0iOCIgZmlsbD0iIzBkOTQ4OCIvPgo8L3N2Zz4K",
+      "sizes": "320x568",
+      "type": "image/svg+xml",
+      "form_factor": "narrow"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "بدء الدراسة",
+      "short_name": "الدراسة",
+      "description": "فتح صفحة المواد والبدء في الدراسة",
+      "url": "/?action=study",
+      "icons": [
+        {
+          "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOTYiIGhlaWdodD0iOTYiIHZpZXdCb3g9IjAgMCA5NiA5NiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iNDgiIGN5PSI0OCIgcj0iNDgiIGZpbGw9IiMwZjRjNzUiLz4KPHBhdGggZD0iTTI0IDM2SDcyVjYwSDI0VjM2WiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "عرض التقدم",
+      "short_name": "التقدم",
+      "description": "عرض إحصائيات التقدم والتحليلات",
+      "url": "/?action=progress",
+      "icons": [
+        {
+          "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOTYiIGhlaWdodD0iOTYiIHZpZXdCb3g9IjAgMCA5NiA5NiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iNDgiIGN5PSI0OCIgcj0iNDgiIGZpbGw9IiNkNGEwMTciLz4KPHJlY3QgeD0iMjQiIHk9IjQ4IiB3aWR0aD0iMTIiIGhlaWdodD0iMjQiIGZpbGw9IndoaXRlIi8+CjxyZWN0IHg9IjQyIiB5PSIzNiIgd2lkdG0iIjEyIiBoZWlnaHQ9IjM2IiBmaWxsPSJ3aGl0ZSIvPgo8cmVjdCB4PSI2MCIgeT0iMjQiIHdpZHRoPSIxMiIgaGVpZ2h0PSI0OCIgZmlsbD0id2hpdGUiLz4KPC9zdmc+",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ]
+}
