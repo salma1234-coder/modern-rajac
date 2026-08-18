@@ -14277,6 +14277,14 @@
       "className": "K",
       "role": "student",
       "createdAt": "2026-08-17T18:54:38.775Z"
+    },
+    {
+      "id": "admin",
+      "username": "admin",
+      "password": "$2b$10$MSyXQigfz1uuQqeuK6rCpuJItKIu4NZnMwGpcO3mKAN392YeSSaqG",
+      "fullName": "Administrator",
+      "role": "admin",
+      "createdAt": "2026-08-18T17:59:04.229Z"
     }
   ],
   "loginRecords": []
