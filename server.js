@@ -144,15 +144,15 @@ const isTeacherOrAdmin = (req, res, next) => {
 async function recordFailedAttempt(ip) {
     await db.read();
     if (!db.data.failedAttempts) db.data.failedAttempts = {};
-    
+
     const key = `ip_${ip}`;
     db.data.failedAttempts[key] = (db.data.failedAttempts[key] || 0) + 1;
-    
+
     // Clear old attempts (older than 1 hour)
     if (db.data.failedAttempts[key] > 20) {
         db.data.failedAttempts[key] = 20;
     }
-    
+
     await db.write();
 }
 
@@ -160,7 +160,7 @@ async function recordFailedAttempt(ip) {
 async function incrementUserFailedAttempts(userId) {
     await db.read();
     if (!db.data.failedAttempts) db.data.failedAttempts = {};
-    
+
     db.data.failedAttempts[userId] = (db.data.failedAttempts[userId] || 0) + 1;
     await db.write();
 }
@@ -187,7 +187,7 @@ app.get("/api/health", (_req, res) => {
 app.post("/api/login", loginLimiter, async (req, res) => {
     try {
         const { username, password } = req.body;
-        
+
         // Input validation
         if (!username || !password) {
             return res.status(400).json({ error: "Username and password required" });
@@ -213,8 +213,8 @@ app.post("/api/login", loginLimiter, async (req, res) => {
         // Check if account is locked
         if (user.lockedUntil && new Date(user.lockedUntil) > new Date()) {
             const remainingTime = Math.ceil((new Date(user.lockedUntil) - new Date()) / 60000);
-            return res.status(403).json({ 
-                error: `Account locked. Try again in ${remainingTime} minutes.` 
+            return res.status(403).json({
+                error: `Account locked. Try again in ${remainingTime} minutes.`
             });
         }
 
@@ -223,18 +223,18 @@ app.post("/api/login", loginLimiter, async (req, res) => {
             // Increment failed attempts
             await recordFailedAttempt(req.ip);
             await incrementUserFailedAttempts(user.id);
-            
+
             // Check if should lock account
             const failedAttempts = db.data.failedAttempts[user.id] || 0;
             if (failedAttempts >= 5) {
                 // Lock account for 30 minutes
                 user.lockedUntil = new Date(Date.now() + 30 * 60 * 1000).toISOString();
                 await db.write();
-                return res.status(403).json({ 
-                    error: "Too many failed attempts. Account locked for 30 minutes." 
+                return res.status(403).json({
+                    error: "Too many failed attempts. Account locked for 30 minutes."
                 });
             }
-            
+
             return res.status(401).json({ error: "Invalid credentials" });
         }
 
@@ -252,7 +252,7 @@ app.post("/api/login", loginLimiter, async (req, res) => {
             ipAddress: req.ip,
             userAgent: req.headers['user-agent']
         };
-        
+
         await db.read();
         db.data.loginRecords.push(loginRecord);
         await db.write();
@@ -264,14 +264,14 @@ app.post("/api/login", loginLimiter, async (req, res) => {
         req.session.role = user.role || 'student';
         req.session.loginTime = new Date().toISOString();
 
-        res.json({ 
-            success: true, 
-            user: { 
-                id: user.id, 
-                username: user.username, 
+        res.json({
+            success: true,
+            user: {
+                id: user.id,
+                username: user.username,
                 fullName: user.fullName,
                 role: user.role || 'student'
-            } 
+            }
         });
     } catch (error) {
         console.error("Login error:", error);
@@ -324,13 +324,13 @@ app.get("/api/admin/users", apiLimiter, isAdmin, async (req, res) => {
 app.post("/api/admin/users", apiLimiter, isAdmin, async (req, res) => {
     try {
         const { username, password, fullName, grade, gender, className, role } = req.body;
-        
+
         if (!username || !password || !fullName) {
             return res.status(400).json({ error: "Username, password, and full name required" });
         }
 
         await db.read();
-        
+
         // Check if username already exists
         if (db.data.users.find(u => u.username === username)) {
             return res.status(400).json({ error: "Username already exists" });
@@ -364,16 +364,16 @@ app.put("/api/admin/users/:id", apiLimiter, isAdmin, async (req, res) => {
     try {
         const { id } = req.params;
         const { username, fullName, grade, gender, className, role, password } = req.body;
-        
+
         await db.read();
         const userIndex = db.data.users.findIndex(u => u.id === id);
-        
+
         if (userIndex === -1) {
             return res.status(404).json({ error: "User not found" });
         }
 
         const user = db.data.users[userIndex];
-        
+
         if (username) user.username = username;
         if (fullName) user.fullName = fullName;
         if (grade) user.grade = grade;
@@ -395,10 +395,10 @@ app.put("/api/admin/users/:id", apiLimiter, isAdmin, async (req, res) => {
 app.delete("/api/admin/users/:id", apiLimiter, isAdmin, async (req, res) => {
     try {
         const { id } = req.params;
-        
+
         await db.read();
         const userIndex = db.data.users.findIndex(u => u.id === id);
-        
+
         if (userIndex === -1) {
             return res.status(404).json({ error: "User not found" });
         }
@@ -417,13 +417,13 @@ app.delete("/api/admin/users/:id", apiLimiter, isAdmin, async (req, res) => {
 app.get("/api/admin/users/search", apiLimiter, isAdmin, async (req, res) => {
     try {
         const { query } = req.query;
-        
+
         if (!query) {
             return res.status(400).json({ error: "Search query required" });
         }
 
         await db.read();
-        const users = db.data.users.filter(u => 
+        const users = db.data.users.filter(u =>
             u.username.toLowerCase().includes(query.toLowerCase()) ||
             u.fullName.toLowerCase().includes(query.toLowerCase()) ||
             (u.className && u.className.toLowerCase().includes(query.toLowerCase()))
@@ -460,14 +460,14 @@ app.get("/api/admin/login-records", apiLimiter, isAdmin, async (req, res) => {
 app.get("/api/admin/export/users", apiLimiter, isAdmin, async (req, res) => {
     try {
         await db.read();
-        
+
         const csvHeader = "ID,Username,Full Name,Grade,Gender,Class,Role,Created At\n";
-        const csvRows = db.data.users.map(u => 
+        const csvRows = db.data.users.map(u =>
             `${u.id},${u.username},${u.fullName},${u.grade || ''},${u.gender || ''},${u.className || ''},${u.role || 'student'},${u.createdAt}`
         ).join("\n");
-        
+
         const csv = csvHeader + csvRows;
-        
+
         res.setHeader('Content-Type', 'text/csv');
         res.setHeader('Content-Disposition', 'attachment; filename=users.csv');
         res.send(csv);
@@ -481,7 +481,7 @@ app.get("/api/admin/export/users", apiLimiter, isAdmin, async (req, res) => {
 app.post("/api/admin/bulk-import", apiLimiter, isAdmin, async (req, res) => {
     try {
         const { grade, className, gender, count, prefix, nameMode, names, passwordMode, passwords } = req.body;
-        
+
         if (!grade || !className || !gender || !count) {
             return res.status(400).json({ error: "Grade, class, gender, and count are required" });
         }
@@ -491,23 +491,23 @@ app.post("/api/admin/bulk-import", apiLimiter, isAdmin, async (req, res) => {
         }
 
         await db.read();
-        
+
         const results = [];
         const errors = [];
         const usernamePrefix = prefix || 'student';
-        
+
         for (let i = 1; i <= count; i++) {
             const username = `${usernamePrefix}${i}`;
-            
+
             // Check if username already exists
             if (db.data.users.find(u => u.username === username)) {
                 errors.push({ username, error: "Username already exists" });
                 continue;
             }
-            
+
             // Determine full name
             const fullName = nameMode === 'manual' ? names[i - 1] : `طالب ${i}`;
-            
+
             // Determine password
             let password;
             if (passwordMode === 'auto') {
@@ -517,9 +517,9 @@ app.post("/api/admin/bulk-import", apiLimiter, isAdmin, async (req, res) => {
             } else if (passwordMode === 'custom') {
                 password = passwords[i - 1]; // Custom password for each
             }
-            
+
             const hashedPassword = await bcrypt.hash(password, 10);
-            
+
             const newUser = {
                 id: Date.now().toString() + i,
                 username: username,
@@ -531,7 +531,7 @@ app.post("/api/admin/bulk-import", apiLimiter, isAdmin, async (req, res) => {
                 role: 'student',
                 createdAt: new Date().toISOString()
             };
-            
+
             db.data.users.push(newUser);
             results.push({
                 username: username,
@@ -539,11 +539,11 @@ app.post("/api/admin/bulk-import", apiLimiter, isAdmin, async (req, res) => {
                 fullName: newUser.fullName
             });
         }
-        
+
         await db.write();
-        
-        res.json({ 
-            success: true, 
+
+        res.json({
+            success: true,
             added: results.length,
             errors: errors.length,
             students: results,
@@ -569,13 +569,13 @@ function generateRandomPassword(length = 8) {
 app.post("/api/admin/add-teacher", apiLimiter, isAdmin, async (req, res) => {
     try {
         const { username, password, fullName, subjects } = req.body;
-        
+
         if (!username || !password || !fullName || !subjects) {
             return res.status(400).json({ error: "Username, password, fullName, and subjects are required" });
         }
 
         await db.read();
-        
+
         // Check if username already exists
         if (db.data.users.find(u => u.username === username)) {
             return res.status(400).json({ error: "Username already exists" });
@@ -598,8 +598,8 @@ app.post("/api/admin/add-teacher", apiLimiter, isAdmin, async (req, res) => {
         db.data.users.push(teacher);
         await db.write();
 
-        res.json({ 
-            success: true, 
+        res.json({
+            success: true,
             teacher: {
                 id: teacher.id,
                 username: teacher.username,
@@ -630,10 +630,10 @@ app.get("/api/admin/teachers", apiLimiter, isAdmin, async (req, res) => {
 app.delete("/api/admin/teachers/:id", apiLimiter, isAdmin, async (req, res) => {
     try {
         const { id } = req.params;
-        
+
         await db.read();
         const teacherIndex = db.data.users.findIndex(u => u.id === id && u.role === 'teacher');
-        
+
         if (teacherIndex === -1) {
             return res.status(404).json({ error: "Teacher not found" });
         }
@@ -652,14 +652,14 @@ app.delete("/api/admin/teachers/:id", apiLimiter, isAdmin, async (req, res) => {
 app.get("/api/teacher/students", apiLimiter, isTeacher, async (req, res) => {
     try {
         const { grade, subject } = req.query;
-        
+
         await db.read();
         let students = db.data.users.filter(u => u.role === 'student');
-        
+
         if (grade) {
             students = students.filter(s => s.grade === grade);
         }
-        
+
         res.json({ students });
     } catch (error) {
         console.error("Get students error:", error);
@@ -671,14 +671,14 @@ app.get("/api/teacher/students", apiLimiter, isTeacher, async (req, res) => {
 app.get("/api/admin/export/login-records", apiLimiter, isAdmin, async (req, res) => {
     try {
         await db.read();
-        
+
         const csvHeader = "User ID,Username,Full Name,Login Time,IP Address\n";
-        const csvRows = db.data.loginRecords.map(r => 
+        const csvRows = db.data.loginRecords.map(r =>
             `${r.userId},${r.username},${r.fullName},${r.loginTime},${r.ipAddress || ''}`
         ).join("\n");
-        
+
         const csv = csvHeader + csvRows;
-        
+
         res.setHeader('Content-Type', 'text/csv');
         res.setHeader('Content-Disposition', 'attachment; filename=login-records.csv');
         res.send(csv);
@@ -693,7 +693,7 @@ const initializeAdmin = async () => {
     try {
         await db.read();
         const adminExists = db.data.users.find(u => u.role === 'admin');
-        
+
         if (!adminExists) {
             const adminPassword = await bcrypt.hash('admin123', 10);
             const admin = {
@@ -715,6 +715,6 @@ const initializeAdmin = async () => {
 
 initializeAdmin();
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
     console.log(`\n  منصة التمريض تعمل على:  http://localhost:${PORT}\n`);
 });
