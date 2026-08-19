@@ -64,13 +64,14 @@ const apiLimiter = rateLimit({
 
 // Database setup
 const adapter = new JSONFile(path.join(root, "database.json"));
-const db = new Low(adapter, { users: [], loginRecords: [], failedAttempts: {} });
+const db = new Low(adapter, { users: [], loginRecords: [], failedAttempts: {}, subjects: [] });
 
 // Initialize database
 db.read().then(() => {
     if (!db.data.users) db.data.users = [];
     if (!db.data.loginRecords) db.data.loginRecords = [];
     if (!db.data.failedAttempts) db.data.failedAttempts = {};
+    if (!db.data.subjects) db.data.subjects = [];
     db.write();
 }).catch(err => {
     console.error("Database initialization error:", err);
@@ -684,6 +685,71 @@ app.get("/api/admin/export/login-records", apiLimiter, isAdmin, async (req, res)
         res.send(csv);
     } catch (error) {
         console.error("Export login records error:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
+// Admin: Get all subjects
+app.get("/api/admin/subjects", apiLimiter, isAdmin, async (req, res) => {
+    try {
+        await db.read();
+        const subjects = db.data.subjects || [];
+        res.json({ subjects });
+    } catch (error) {
+        console.error("Get subjects error:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
+// Admin: Add new subject
+app.post("/api/admin/subjects", apiLimiter, isAdmin, async (req, res) => {
+    try {
+        const { name, grade, teacherId } = req.body;
+
+        if (!name || !grade) {
+            return res.status(400).json({ error: "اسم المادة والصف مطلوبان" });
+        }
+
+        await db.read();
+
+        const teacher = teacherId ? db.data.users.find(u => u.id === teacherId) : null;
+        const subject = {
+            id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
+            name,
+            grade,
+            teacherId: teacherId || null,
+            teacherName: teacher ? teacher.fullName : null,
+            createdAt: new Date().toISOString()
+        };
+
+        db.data.subjects.push(subject);
+        await db.write();
+
+        res.json({ success: true, subject });
+    } catch (error) {
+        console.error("Add subject error:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
+// Admin: Delete subject
+app.delete("/api/admin/subjects/:subjectId", apiLimiter, isAdmin, async (req, res) => {
+    try {
+        const { subjectId } = req.params;
+
+        await db.read();
+        const index = db.data.subjects.findIndex(s => s.id === subjectId);
+
+        if (index === -1) {
+            return res.status(404).json({ error: "المادة غير موجودة" });
+        }
+
+        db.data.subjects.splice(index, 1);
+        await db.write();
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error("Delete subject error:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 });

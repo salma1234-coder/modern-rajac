@@ -57,6 +57,9 @@ function showSection(sectionId) {
     if (sectionId === 'teachers') {
         loadTeachers();
     }
+    if (sectionId === 'subjects') {
+        loadSubjects();
+    }
 }
 
 // Load dashboard statistics
@@ -715,6 +718,129 @@ async function deleteTeacher(teacherId) {
         }
     } catch (error) {
         console.error('Delete teacher error:', error);
+        alert('خطأ في الاتصال بالخادم');
+    }
+}
+
+// Subjects Management Functions
+async function loadSubjects() {
+    try {
+        const response = await fetch('/api/admin/subjects');
+        if (response.ok) {
+            const data = await response.json();
+            renderSubjectsTable(data.subjects);
+        } else {
+            console.error('Failed to load subjects');
+        }
+    } catch (error) {
+        console.error('Load subjects error:', error);
+    }
+}
+
+function renderSubjectsTable(subjects) {
+    const tbody = document.getElementById('subjectsTableBody');
+    if (!subjects || subjects.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">لا توجد مواد</td></tr>';
+        return;
+    }
+
+    tbody.innerHTML = subjects.map(subject => `
+        <tr>
+            <td>${escapeHtml(subject.name)}</td>
+            <td>${getGradeName(subject.grade)}</td>
+            <td>${escapeHtml(subject.teacherName || 'غير محدد')}</td>
+            <td>${new Date(subject.createdAt).toLocaleDateString('ar-EG')}</td>
+            <td>
+                <button onclick="deleteSubject('${subject.id}')" class="btn btn--danger">حذف</button>
+            </td>
+        </tr>
+    `).join('');
+}
+
+function getGradeName(grade) {
+    const grades = {
+        'first': 'الصف الأول',
+        'second': 'الصف الثاني',
+        'third': 'الصف الثالث'
+    };
+    return grades[grade] || grade;
+}
+
+function showAddSubjectModal() {
+    document.getElementById('subjectModal').classList.add('active');
+    loadTeachersForSubject();
+}
+
+function closeSubjectModal() {
+    document.getElementById('subjectModal').classList.remove('active');
+    document.getElementById('subjectForm').reset();
+}
+
+async function loadTeachersForSubject() {
+    try {
+        const response = await fetch('/api/admin/teachers');
+        if (response.ok) {
+            const data = await response.json();
+            const select = document.getElementById('subjectTeacher');
+            select.innerHTML = '<option value="">اختر المعلم</option>';
+            data.teachers.forEach(teacher => {
+                select.innerHTML += `<option value="${teacher.id}">${escapeHtml(teacher.fullName)}</option>`;
+            });
+        }
+    } catch (error) {
+        console.error('Load teachers error:', error);
+    }
+}
+
+// Handle subject form submission
+document.getElementById('subjectForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const subjectData = {
+        name: document.getElementById('subjectName').value,
+        grade: document.getElementById('subjectGrade').value,
+        teacherId: document.getElementById('subjectTeacher').value
+    };
+
+    try {
+        const response = await fetch('/api/admin/subjects', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(subjectData)
+        });
+
+        if (response.ok) {
+            alert('تم إضافة المادة بنجاح!');
+            closeSubjectModal();
+            await loadSubjects();
+        } else {
+            const error = await response.json();
+            alert(error.error || 'خطأ في إضافة المادة');
+        }
+    } catch (error) {
+        console.error('Add subject error:', error);
+        alert('خطأ في الاتصال بالخادم');
+    }
+});
+
+async function deleteSubject(subjectId) {
+    if (!confirm('هل أنت متأكد من حذف هذه المادة؟')) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/admin/subjects/${subjectId}`, {
+            method: 'DELETE'
+        });
+
+        if (response.ok) {
+            alert('تم حذف المادة بنجاح!');
+            await loadSubjects();
+        } else {
+            alert('خطأ في حذف المادة');
+        }
+    } catch (error) {
+        console.error('Delete subject error:', error);
         alert('خطأ في الاتصال بالخادم');
     }
 }
