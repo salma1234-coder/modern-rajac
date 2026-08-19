@@ -14287,5 +14287,6 @@
       "createdAt": "2026-08-18T17:59:04.229Z"
     }
   ],
-  "loginRecords": []
+  "loginRecords": [],
+  "failedAttempts": {}
 }
