@@ -884,8 +884,6 @@ async function loginAdmin() {
             const user = await response.json();
             if (user.role === 'teacher') {
                 window.location.href = 'teacher.html';
-            } else if (user.role === 'admin') {
-                window.location.href = 'admin.html';
             } else {
                 if (loginMsg) {
                     loginMsg.textContent = "غير مصرح لك بالوصول";
