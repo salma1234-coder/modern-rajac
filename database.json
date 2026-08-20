@@ -14285,8 +14285,400 @@
       "fullName": "Administrator",
       "role": "admin",
       "createdAt": "2026-08-18T17:59:04.229Z"
+    },
+    {
+      "id": "1787254784526leqokbi9e",
+      "username": "ولاءعصامحلمى",
+      "password": "$2b$10$13gXdVuvRn/.1ROfgD1ROOPKsMvZh7vM5wOgDq.54E5Iw251sEfdG",
+      "fullName": "ولاء عصام حلمى",
+      "role": "teacher",
+      "subjects": [
+        "اللغه العربيه"
+      ],
+      "createdAt": "2026-08-20T19:39:44.526Z"
+    },
+    {
+      "id": "17872547846169woutgp3j",
+      "username": "ايمانمحمدفتحى",
+      "password": "$2b$10$xu5cxZOAisttp.6vVVXWgub/ya0WbWutKke6USn7l6Q3OcbJCf9nu",
+      "fullName": "ايمان محمد فتحى",
+      "role": "teacher",
+      "subjects": [
+        "رياضيات",
+        "إحصاء"
+      ],
+      "createdAt": "2026-08-20T19:39:44.616Z"
+    },
+    {
+      "id": "178725478469196mmbnbop",
+      "username": "مروهحجاجعبدالحكيم",
+      "password": "$2b$10$DdEiYaB4Y8TiGOUCMgGS/exzFHMgEtc8zFfCY/H52nd2Y8ZHWlPmK",
+      "fullName": "مروه حجاج عبدالحكيم",
+      "role": "teacher",
+      "subjects": [
+        "Anatomy & Physiology",
+        "Surgical Medicine",
+        "Medical Medicine"
+      ],
+      "createdAt": "2026-08-20T19:39:44.691Z"
+    },
+    {
+      "id": "1787254784767g7tcy3c43",
+      "username": "ولاءيوسفعلى",
+      "password": "$2b$10$79RhwLCjUNZb5kKwgpiWBObBJiwtY6/JNzGOjTv8pq1pKWFiP0vSy",
+      "fullName": "ولاء يوسف على",
+      "role": "teacher",
+      "subjects": [
+        "Fundamental(نظرى)"
+      ],
+      "createdAt": "2026-08-20T19:39:44.768Z"
+    },
+    {
+      "id": "1787254784894prpir3qtx",
+      "username": "ولاءيوسفعملى",
+      "password": "$2b$10$2OZLb1o7Kc2LPiMFtPmMPeCN7oUKUHN9V0FUnBp1YUDK4S77PBDCm",
+      "fullName": "ولاء يوسف عملى",
+      "role": "teacher",
+      "subjects": [
+        "Fundamental(عملى)"
+      ],
+      "createdAt": "2026-08-20T19:39:44.894Z"
+    },
+    {
+      "id": "1787254784968xxc1wc8pp",
+      "username": "محمدصابرمحمد",
+      "password": "$2b$10$VMY7fcnrPH7NSJ.Bp7/6r.6uELO2hXHqXjuscPoNlJ.4Fd5aPfTWG",
+      "fullName": "محمد صابر محمد",
+      "role": "teacher",
+      "subjects": [
+        "فيزياء وكيمياء"
+      ],
+      "createdAt": "2026-08-20T19:39:44.968Z"
+    },
+    {
+      "id": "1787254785039ud0sjp6d2",
+      "username": "رانياخالدزكريا",
+      "password": "$2b$10$29JmAR0qUS8UZNoeucIECeKcYPqSThjz7mg2OK.Yp4sW5CGAIjAQK",
+      "fullName": "رانيا خالد زكريا",
+      "role": "teacher",
+      "subjects": [
+        "احياء"
+      ],
+      "createdAt": "2026-08-20T19:39:45.039Z"
+    },
+    {
+      "id": "1787254785121l1rz9dh2w",
+      "username": "امانىزينالعابدين",
+      "password": "$2b$10$K4hcwU98gsQY2C5iiXOJp.flXgcQADweP7KY.oF.lwREbcpFAwqzm",
+      "fullName": "امانى زين العابدين",
+      "role": "teacher",
+      "subjects": [
+        "دراسات اجتماعية"
+      ],
+      "createdAt": "2026-08-20T19:39:45.121Z"
+    },
+    {
+      "id": "178725478519584w072dgu",
+      "username": "ميادهصفوتعنتر",
+      "password": "$2b$10$gj5KvcHrHoR8rFQwwxh/EuADN4dggu1fwOBRMf2FBDUNs2LGnYq9i",
+      "fullName": "مياده صفوت عنتر",
+      "role": "teacher",
+      "subjects": [
+        "English"
+      ],
+      "createdAt": "2026-08-20T19:39:45.196Z"
+    },
+    {
+      "id": "1787254785271p8wsc4iop",
+      "username": "الشيماءبدرالدين",
+      "password": "$2b$10$J10LjYhnHYm2cjM1PWtqx./T7FQ5XQtibeBatRjZM2l92qPtGYZmm",
+      "fullName": "الشيماء بدر الدين",
+      "role": "teacher",
+      "subjects": [
+        "حاسب الى"
+      ],
+      "createdAt": "2026-08-20T19:39:45.271Z"
+    },
+    {
+      "id": "1787254785345afav0fxcm",
+      "username": "حازممحمدسيد",
+      "password": "$2b$10$0JuUpFWp2nqO2YF7lYXlhujcPIXHe4FqlrQTaK2dv36UzJc.Nnnaq",
+      "fullName": "حازم محمد سيد",
+      "role": "teacher",
+      "subjects": [
+        "Medical-Surgical Nursing(نظرى)"
+      ],
+      "createdAt": "2026-08-20T19:39:45.345Z"
+    },
+    {
+      "id": "1787254785428noteu080x",
+      "username": "عبدالرحمنخالدغالب",
+      "password": "$2b$10$jlr8XIvjjrr.zlac/R6JPunVnTMtcd8fh.x/r3ls/zFFlktC.RPR.",
+      "fullName": "عبدالرحمن خالد غالب",
+      "role": "teacher",
+      "subjects": [
+        "Medical-Surgical Nursing(عملى)"
+      ],
+      "createdAt": "2026-08-20T19:39:45.428Z"
+    },
+    {
+      "id": "17872547855079z1hktzcu",
+      "username": "طارقمجدىابراهيم",
+      "password": "$2b$10$.6Ana7DqPy8M5snao.jDMeN6AnWhXK5XxVuLhvOd/eVo8lEcce7du",
+      "fullName": "طارق مجدى ابراهيم",
+      "role": "teacher",
+      "subjects": [
+        "Community Health Nursing"
+      ],
+      "createdAt": "2026-08-20T19:39:45.507Z"
+    },
+    {
+      "id": "1787254785585dtgr9h6u4",
+      "username": "اسماءحسانينسيد",
+      "password": "$2b$10$nqEZGl6Gvzfg/HiJxQTIu.QS1L6Eb/7YrApH35FEW2KmCmkH3xD3W",
+      "fullName": "اسماء حسانين سيد",
+      "role": "teacher",
+      "subjects": [
+        "English"
+      ],
+      "createdAt": "2026-08-20T19:39:45.585Z"
+    },
+    {
+      "id": "1787254785657x0beklkd2",
+      "username": "محمودعبدالعظيم",
+      "password": "$2b$10$Ul3bgvE0.oMESoLIAMDbQukT.E5/MiwiVnB8C6RB90kgb4fA7YSfC",
+      "fullName": "محمود عبدالعظيم",
+      "role": "teacher",
+      "subjects": [
+        "اللغة العربية"
+      ],
+      "createdAt": "2026-08-20T19:39:45.657Z"
+    },
+    {
+      "id": "1787254785736t0dq09ffo",
+      "username": "وفاءعبدالسميع",
+      "password": "$2b$10$fZ017nx7oba3Btk8i35RvecXHYPIM1GziuJj0PbYvksKb2ipgCcL6",
+      "fullName": "وفاء عبدالسميع",
+      "role": "teacher",
+      "subjects": [
+        "بيولوجي"
+      ],
+      "createdAt": "2026-08-20T19:39:45.736Z"
+    },
+    {
+      "id": "1787254785812asrpt4d9i",
+      "username": "شيماءعبدالمنعم",
+      "password": "$2b$10$lp8WmCxDWipYN7gT6D.jw.sSZZWMs1XT5tpCYUFTj2S/C.7aQJLwu",
+      "fullName": "شيماء عبدالمنعم",
+      "role": "teacher",
+      "subjects": [
+        "فيزياء وكيمياء"
+      ],
+      "createdAt": "2026-08-20T19:39:45.812Z"
+    },
+    {
+      "id": "1787254785889gpudys8js",
+      "username": "ايهمخلوفخلف",
+      "password": "$2b$10$YZDB1md7d/.yMS2TMKzc..MtPLq0SDQneMAGC.Mj.ibY3z.xAidlq",
+      "fullName": "ايه مخلوف خلف",
+      "role": "teacher",
+      "subjects": [
+        "حاسب آلي"
+      ],
+      "createdAt": "2026-08-20T19:39:45.889Z"
     }
   ],
   "loginRecords": [],
-  "failedAttempts": {}
+  "failedAttempts": {},
+  "subjects": [
+    {
+      "id": "1787254784543ygpualsfo",
+      "name": "اللغه العربيه",
+      "color": "#fdcb8e",
+      "grade": "first",
+      "teacherId": "1787254784526leqokbi9e",
+      "teacherName": "ولاء عصام حلمى",
+      "createdAt": "2026-08-20T19:39:44.543Z"
+    },
+    {
+      "id": "1787254784617634otsufx",
+      "name": "رياضيات",
+      "color": "#78faff",
+      "grade": "first",
+      "teacherId": "17872547846169woutgp3j",
+      "teacherName": "ايمان محمد فتحى",
+      "createdAt": "2026-08-20T19:39:44.617Z"
+    },
+    {
+      "id": "1787254784691w2gf0fq73",
+      "name": "Anatomy & Physiology",
+      "color": "#b0eeb6",
+      "grade": "first",
+      "teacherId": "178725478469196mmbnbop",
+      "teacherName": "مروه حجاج عبدالحكيم",
+      "createdAt": "2026-08-20T19:39:44.691Z"
+    },
+    {
+      "id": "1787254784768qjskceheh",
+      "name": "Fundamental(نظرى)",
+      "color": "#ffb4a2",
+      "grade": "first",
+      "teacherId": "1787254784767g7tcy3c43",
+      "teacherName": "ولاء يوسف على",
+      "createdAt": "2026-08-20T19:39:44.768Z"
+    },
+    {
+      "id": "1787254784895gsdscaepz",
+      "name": "Fundamental(عملى)",
+      "color": "#c0dff7",
+      "grade": "first",
+      "teacherId": "1787254784894prpir3qtx",
+      "teacherName": "ولاء يوسف عملى",
+      "createdAt": "2026-08-20T19:39:44.895Z"
+    },
+    {
+      "id": "17872547849683y367qa1y",
+      "name": "فيزياء وكيمياء",
+      "color": "#aee7d2",
+      "grade": "first",
+      "teacherId": "1787254784968xxc1wc8pp",
+      "teacherName": "محمد صابر محمد",
+      "createdAt": "2026-08-20T19:39:44.968Z"
+    },
+    {
+      "id": "1787254785039py4gq4mjk",
+      "name": "احياء",
+      "color": "#fad2b7",
+      "grade": "first",
+      "teacherId": "1787254785039ud0sjp6d2",
+      "teacherName": "رانيا خالد زكريا",
+      "createdAt": "2026-08-20T19:39:45.039Z"
+    },
+    {
+      "id": "1787254785121xsiqlfuhy",
+      "name": "دراسات اجتماعية",
+      "color": "#cdaedf",
+      "grade": "first",
+      "teacherId": "1787254785121l1rz9dh2w",
+      "teacherName": "امانى زين العابدين",
+      "createdAt": "2026-08-20T19:39:45.121Z"
+    },
+    {
+      "id": "1787254785196axapli8o1",
+      "name": "English",
+      "color": "#f195ea",
+      "grade": "first",
+      "teacherId": "178725478519584w072dgu",
+      "teacherName": "مياده صفوت عنتر",
+      "createdAt": "2026-08-20T19:39:45.196Z"
+    },
+    {
+      "id": "1787254785271w38ign4dj",
+      "name": "حاسب الى",
+      "color": "#ffa672",
+      "grade": "first",
+      "teacherId": "1787254785271p8wsc4iop",
+      "teacherName": "الشيماء بدر الدين",
+      "createdAt": "2026-08-20T19:39:45.271Z"
+    },
+    {
+      "id": "1787254785345un5u7tk76",
+      "name": "Medical-Surgical Nursing(نظرى)",
+      "color": "#fdcb8e",
+      "grade": "second",
+      "teacherId": "1787254785345afav0fxcm",
+      "teacherName": "حازم محمد سيد",
+      "createdAt": "2026-08-20T19:39:45.345Z"
+    },
+    {
+      "id": "17872547854295jm61vdgp",
+      "name": "Medical-Surgical Nursing(عملى)",
+      "color": "#78faff",
+      "grade": "second",
+      "teacherId": "1787254785428noteu080x",
+      "teacherName": "عبدالرحمن خالد غالب",
+      "createdAt": "2026-08-20T19:39:45.429Z"
+    },
+    {
+      "id": "1787254785508add2zjmqt",
+      "name": "Community Health Nursing",
+      "color": "#b0eeb6",
+      "grade": "second",
+      "teacherId": "17872547855079z1hktzcu",
+      "teacherName": "طارق مجدى ابراهيم",
+      "createdAt": "2026-08-20T19:39:45.508Z"
+    },
+    {
+      "id": "1787254785508b4l1snqju",
+      "name": "Surgical Medicine",
+      "color": "#ffb4a2",
+      "grade": "second",
+      "teacherId": "178725478469196mmbnbop",
+      "teacherName": "مروه حجاج عبدالحكيم",
+      "createdAt": "2026-08-20T19:39:45.508Z"
+    },
+    {
+      "id": "1787254785509nu9ooyhtg",
+      "name": "Medical Medicine",
+      "color": "#c0dff7",
+      "grade": "second",
+      "teacherId": "178725478469196mmbnbop",
+      "teacherName": "مروه حجاج عبدالحكيم",
+      "createdAt": "2026-08-20T19:39:45.509Z"
+    },
+    {
+      "id": "1787254785585ewj8zt6oa",
+      "name": "English",
+      "color": "#f0fa68",
+      "grade": "second",
+      "teacherId": "1787254785585dtgr9h6u4",
+      "teacherName": "اسماء حسانين سيد",
+      "createdAt": "2026-08-20T19:39:45.585Z"
+    },
+    {
+      "id": "1787254785657518p1ujv2",
+      "name": "اللغة العربية",
+      "color": "#cdaedf",
+      "grade": "second",
+      "teacherId": "1787254785657x0beklkd2",
+      "teacherName": "محمود عبدالعظيم",
+      "createdAt": "2026-08-20T19:39:45.657Z"
+    },
+    {
+      "id": "17872547857375pk8fh4yy",
+      "name": "بيولوجي",
+      "color": "#ffa672",
+      "grade": "second",
+      "teacherId": "1787254785736t0dq09ffo",
+      "teacherName": "وفاء عبدالسميع",
+      "createdAt": "2026-08-20T19:39:45.737Z"
+    },
+    {
+      "id": "178725478581246ktst2ck",
+      "name": "فيزياء وكيمياء",
+      "color": "#f195ea",
+      "grade": "second",
+      "teacherId": "1787254785812asrpt4d9i",
+      "teacherName": "شيماء عبدالمنعم",
+      "createdAt": "2026-08-20T19:39:45.812Z"
+    },
+    {
+      "id": "178725478581391stg1232",
+      "name": "إحصاء",
+      "color": "#a5faac",
+      "grade": "second",
+      "teacherId": "17872547846169woutgp3j",
+      "teacherName": "ايمان محمد فتحى",
+      "createdAt": "2026-08-20T19:39:45.813Z"
+    },
+    {
+      "id": "1787254785890gbmt0ge5g",
+      "name": "حاسب آلي",
+      "color": "#8089f5",
+      "grade": "second",
+      "teacherId": "1787254785889gpudys8js",
+      "teacherName": "ايه مخلوف خلف",
+      "createdAt": "2026-08-20T19:39:45.890Z"
+    }
+  ]
 }
