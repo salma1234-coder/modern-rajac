@@ -418,11 +418,11 @@ function showSubjectsForAdmin() {
 // =====================
 // فتح المادة وعرض المحتوى
 // =====================
-function openMaterial(name) {
+async function openMaterial(name) {
     currentMaterial = name;
     document.getElementById("materialTitle").textContent = name;
     setMaterialBreadcrumb(name);
-    renderMaterialContent();
+    await renderMaterialContent();
     document.getElementById("subjects").style.display = "none";
     document.getElementById("materialPage").style.display = "";
 
@@ -505,7 +505,7 @@ function stopStudyTimeTracking() {
     }
 }
 
-function renderMaterialContent() {
+async function renderMaterialContent() {
     const el = document.getElementById("materialContent");
     const mat = currentMaterial;
     if (!el || !mat) return;
@@ -516,81 +516,89 @@ function renderMaterialContent() {
     // Show notifications for new content
     showNotificationsForStudent();
 
-    const summaries = JSON.parse(localStorage.getItem(mat + "_summaries")) || [];
-    const videos = JSON.parse(localStorage.getItem(mat + "_videos")) || [];
-    const pdfs = JSON.parse(localStorage.getItem(mat + "_pdfs")) || [];
-    const voices = JSON.parse(localStorage.getItem(mat + "_voices")) || [];
-    const testData = parseTestFromStorage(mat);
+    try {
+        const response = await fetch(`/api/content?subject=${encodeURIComponent(mat)}`);
+        const contentData = await response.json();
+        
+        const summaries = contentData.content.filter(c => c.type === 'summary');
+        const videos = contentData.content.filter(c => c.type === 'video');
+        const pdfs = contentData.content.filter(c => c.type === 'pdf');
+        const voices = contentData.content.filter(c => c.type === 'audio');
+        const testData = parseTestFromStorage(mat);
 
-    let html = '<div class="material-sections">';
+        let html = '<div class="material-sections">';
 
-    if (summaries.length) {
-        html += '<section class="mat-block"><h3>الملخصات</h3>';
-        summaries.forEach((s, index) => {
-            const timerNote = s.timerEnabled && s.timerValue
-                ? `<p class="timer-note">⏱ وقت مقترح للمراجعة: ${escapeHtml(s.timerValue)} ${timerUnitLabel(s.timerUnit)}</p>`
-                : "";
-            const deleteBtn = !currentStudent ? `<button type="button" class="btn-delete" onclick="deleteSummary(${index})" title="حذف الملخص">🗑️</button>` : '';
-            html += `<div class="summary-card">${deleteBtn}<div class="summary-text">${escapeHtml(s.text).replace(/\n/g, "<br>")}</div>${timerNote}</div>`;
-        });
-        html += "</section>";
-    }
-
-    if (videos.length) {
-        html += '<section class="mat-block"><h3>فيديوهات</h3>';
-        videos.forEach((v, index) => {
-            if (v.url && isSafeMediaUrl(v.url)) {
-                const deleteBtn = !currentStudent ? `<button type="button" class="btn-delete" onclick="deleteVideo(${index})" title="حذف الفيديو">🗑️</button>` : '';
-                html += `<div class="media-row">${deleteBtn}<p class="media-name">${escapeHtml(v.name)}</p><video controls class="mat-video" src="${urlForHtmlAttr(v.url)}"></video></div>`;
-            }
-        });
-        html += "</section>";
-    }
-
-    if (voices.length) {
-        html += '<section class="mat-block"><h3>ملفات صوتية</h3>';
-        voices.forEach((v, index) => {
-            if (v.url && isSafeMediaUrl(v.url)) {
-                const deleteBtn = !currentStudent ? `<button type="button" class="btn-delete" onclick="deleteVoice(${index})" title="حذف الملف الصوتي">🗑️</button>` : '';
-                html += `<div class="media-row">${deleteBtn}<p class="media-name">${escapeHtml(v.name)}</p><audio controls class="mat-audio" src="${urlForHtmlAttr(v.url)}"></audio></div>`;
-            }
-        });
-        html += "</section>";
-    }
-
-    if (pdfs.length) {
-        html += '<section class="mat-block"><h3>ملفات PDF</h3>';
-        pdfs.forEach((v, index) => {
-            if (v.url && isSafeMediaUrl(v.url)) {
-                const safeName = escapeAttr(v.name);
-                const deleteBtn = !currentStudent ? `<button type="button" class="btn-delete" onclick="deletePDF(${index})" title="حذف ملف PDF">🗑️</button>` : '';
-                html += `<div class="media-row">${deleteBtn}<p class="media-name">${escapeHtml(v.name)}</p><iframe class="mat-pdf" title="${safeName}" src="${urlForHtmlAttr(v.url)}"></iframe><a class="pdf-dl" href="${urlForHtmlAttr(v.url)}" download="${escapeAttr(v.name)}">تحميل PDF</a></div>`;
-            }
-        });
-        html += "</section>";
-    }
-
-    if (testData.questions.length) {
-        const deleteTestBtn = !currentStudent ? `<button type="button" class="btn-delete-test" onclick="deleteTest()" title="حذف الاختبار">🗑️ حذف الاختبار</button>` : '';
-        if (currentStudent) {
-            // Check if student already took this test
-            const hasTakenTest = hasStudentTakenTest();
-            if (hasTakenTest) {
-                html += `<section class="mat-block exam-cta">${deleteTestBtn}<div class="test-completed">✅ لقد قمت بأداء هذا الاختبار من قبل</div></section>`;
-            } else {
-                html += `<section class="mat-block exam-cta">${deleteTestBtn}<button type="button" class="btn-start-exam" onclick="startStudentExam()">بدء الاختبار (${testData.questions.length} سؤال)</button></section>`;
-            }
-        } else {
-            html += `<section class="mat-block exam-cta">${deleteTestBtn}<p class="hint-muted">سجّل دخولك كطالب من الأعلى لإجراء الاختبار.</p></section>`;
+        if (summaries.length) {
+            html += '<section class="mat-block"><h3>الملخصات</h3>';
+            summaries.forEach((s, index) => {
+                const timerNote = s.timerEnabled && s.timerValue
+                    ? `<p class="timer-note">⏱ وقت مقترح للمراجعة: ${escapeHtml(s.timerValue)} ${timerUnitLabel(s.timerUnit)}</p>`
+                    : "";
+                const deleteBtn = !currentStudent ? `<button type="button" class="btn-delete" onclick="deleteSummary(${index})" title="حذف الملخص">🗑️</button>` : '';
+                html += `<div class="summary-card">${deleteBtn}<div class="summary-text">${escapeHtml(s.content).replace(/\n/g, "<br>")}</div>${timerNote}</div>`;
+            });
+            html += "</section>";
         }
-    }
 
-    if (!summaries.length && !videos.length && !voices.length && !pdfs.length && !testData.questions.length) {
-        html += '<p class="empty-mat">لا يوجد محتوى بعد لهذه المادة. تواصل مع معلّم المادة.</p>';
-    }
+        if (videos.length) {
+            html += '<section class="mat-block"><h3>فيديوهات</h3>';
+            videos.forEach((v, index) => {
+                if (v.fileData && isSafeMediaUrl(v.fileData)) {
+                    const deleteBtn = !currentStudent ? `<button type="button" class="btn-delete" onclick="deleteVideo(${index})" title="حذف الفيديو">🗑️</button>` : '';
+                    html += `<div class="media-row">${deleteBtn}<p class="media-name">${escapeHtml(v.title)}</p><video controls class="mat-video" src="${urlForHtmlAttr(v.fileData)}"></video></div>`;
+                }
+            });
+            html += "</section>";
+        }
 
-    html += "</div>";
-    el.innerHTML = html;
+        if (voices.length) {
+            html += '<section class="mat-block"><h3>ملفات صوتية</h3>';
+            voices.forEach((v, index) => {
+                if (v.fileData && isSafeMediaUrl(v.fileData)) {
+                    const deleteBtn = !currentStudent ? `<button type="button" class="btn-delete" onclick="deleteVoice(${index})" title="حذف الملف الصوتي">🗑️</button>` : '';
+                    html += `<div class="media-row">${deleteBtn}<p class="media-name">${escapeHtml(v.title)}</p><audio controls class="mat-audio" src="${urlForHtmlAttr(v.fileData)}"></audio></div>`;
+                }
+            });
+            html += "</section>";
+        }
+
+        if (pdfs.length) {
+            html += '<section class="mat-block"><h3>ملفات PDF</h3>';
+            pdfs.forEach((v, index) => {
+                if (v.fileData && isSafeMediaUrl(v.fileData)) {
+                    const safeName = escapeAttr(v.fileName);
+                    const deleteBtn = !currentStudent ? `<button type="button" class="btn-delete" onclick="deletePDF(${index})" title="حذف ملف PDF">🗑️</button>` : '';
+                    html += `<div class="media-row">${deleteBtn}<p class="media-name">${escapeHtml(v.title)}</p><iframe class="mat-pdf" title="${safeName}" src="${urlForHtmlAttr(v.fileData)}"></iframe><a class="pdf-dl" href="${urlForHtmlAttr(v.fileData)}" download="${escapeAttr(v.fileName)}">تحميل PDF</a></div>`;
+                }
+            });
+            html += "</section>";
+        }
+
+        if (testData.questions.length) {
+            const deleteTestBtn = !currentStudent ? `<button type="button" class="btn-delete-test" onclick="deleteTest()" title="حذف الاختبار">🗑️ حذف الاختبار</button>` : '';
+            if (currentStudent) {
+                // Check if student already took this test
+                const hasTakenTest = hasStudentTakenTest();
+                if (hasTakenTest) {
+                    html += `<section class="mat-block exam-cta">${deleteTestBtn}<div class="test-completed">✅ لقد قمت بأداء هذا الاختبار من قبل</div></section>`;
+                } else {
+                    html += `<section class="mat-block exam-cta">${deleteTestBtn}<button type="button" class="btn-start-exam" onclick="startStudentExam()">بدء الاختبار (${testData.questions.length} سؤال)</button></section>`;
+                }
+            } else {
+                html += `<section class="mat-block exam-cta">${deleteTestBtn}<p class="hint-muted">سجّل دخولك كطالب من الأعلى لإجراء الاختبار.</p></section>`;
+            }
+        }
+
+        if (!summaries.length && !videos.length && !voices.length && !pdfs.length && !testData.questions.length) {
+            html += '<p class="empty-mat">لا يوجد محتوى بعد لهذه المادة. تواصل مع معلّم المادة.</p>';
+        }
+
+        html += "</div>";
+        el.innerHTML = html;
+    } catch (error) {
+        console.error('Render material content error:', error);
+        el.innerHTML = '<p class="empty-mat">خطأ في تحميل المحتوى</p>';
+    }
 }
 
 function startStudentExam() {

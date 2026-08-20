@@ -57,9 +57,10 @@ function showSection(sectionId) {
 // Load dashboard statistics
 async function loadDashboardStats() {
     try {
-        const [subjectsResponse, studentsResponse] = await Promise.all([
+        const [subjectsResponse, studentsResponse, totalContent] = await Promise.all([
             fetch('/api/teacher/subjects'),
-            fetch('/api/teacher/students')
+            fetch('/api/teacher/students'),
+            calculateTotalContent()
         ]);
         
         const subjects = await subjectsResponse.json();
@@ -67,21 +68,23 @@ async function loadDashboardStats() {
         
         document.getElementById('totalSubjects').textContent = subjects.subjects.length;
         document.getElementById('totalStudents').textContent = students.students.length;
-        document.getElementById('totalContent').textContent = calculateTotalContent();
+        document.getElementById('totalContent').textContent = totalContent;
     } catch (error) {
         console.error('Load dashboard stats error:', error);
     }
 }
 
-function calculateTotalContent() {
-    let total = 0;
-    teacherSubjects.forEach(subject => {
-        total += (JSON.parse(localStorage.getItem(subject + '_summaries')) || []).length;
-        total += (JSON.parse(localStorage.getItem(subject + '_videos')) || []).length;
-        total += (JSON.parse(localStorage.getItem(subject + '_pdfs')) || []).length;
-        total += (JSON.parse(localStorage.getItem(subject + '_voices')) || []).length;
-    });
-    return total;
+async function calculateTotalContent() {
+    try {
+        const response = await fetch('/api/teacher/content');
+        if (response.ok) {
+            const data = await response.json();
+            return data.content.length;
+        }
+    } catch (error) {
+        console.error('Calculate content error:', error);
+    }
+    return 0;
 }
 
 // Load teacher's subjects
@@ -97,28 +100,42 @@ async function loadMySubjects() {
     }
 }
 
-function renderSubjects(subjects) {
+async function renderSubjects(subjects) {
     const container = document.getElementById('subjectsList');
     if (!subjects || subjects.length === 0) {
         container.innerHTML = '<p>لا توجد مواد مسندة إليك</p>';
         return;
     }
 
-    container.innerHTML = subjects.map(subject => `
-        <div class="subject-card" style="background-color: ${subject.color}20; border-right: 4px solid ${subject.color}">
-            <h3>${escapeHtml(subject.name)}</h3>
-            <p>الصف: ${getGradeName(subject.grade)}</p>
-            <p>المحتوى: ${calculateSubjectContent(subject.name)}</p>
-        </div>
-    `).join('');
+    const subjectsHtml = await Promise.all(subjects.map(async subject => {
+        const contentInfo = await calculateSubjectContent(subject.name);
+        return `
+            <div class="subject-card" style="background-color: ${subject.color}20; border-right: 4px solid ${subject.color}">
+                <h3>${escapeHtml(subject.name)}</h3>
+                <p>الصف: ${getGradeName(subject.grade)}</p>
+                <p>المحتوى: ${contentInfo}</p>
+            </div>
+        `;
+    }));
+
+    container.innerHTML = subjectsHtml.join('');
 }
 
-function calculateSubjectContent(subjectName) {
-    const summaries = (JSON.parse(localStorage.getItem(subjectName + '_summaries')) || []).length;
-    const videos = (JSON.parse(localStorage.getItem(subjectName + '_videos')) || []).length;
-    const pdfs = (JSON.parse(localStorage.getItem(subjectName + '_pdfs')) || []).length;
-    const voices = (JSON.parse(localStorage.getItem(subjectName + '_voices')) || []).length;
-    return `${summaries} ملخصات, ${videos} فيديوهات, ${pdfs} PDFs, ${voices} صوتيات`;
+async function calculateSubjectContent(subjectName) {
+    try {
+        const response = await fetch(`/api/teacher/content?subject=${encodeURIComponent(subjectName)}`);
+        if (response.ok) {
+            const data = await response.json();
+            const summaries = data.content.filter(c => c.type === 'summary').length;
+            const videos = data.content.filter(c => c.type === 'video').length;
+            const pdfs = data.content.filter(c => c.type === 'pdf').length;
+            const voices = data.content.filter(c => c.type === 'audio').length;
+            return `${summaries} ملخصات, ${videos} فيديوهات, ${pdfs} PDFs, ${voices} صوتيات`;
+        }
+    } catch (error) {
+        console.error('Calculate subject content error:', error);
+    }
+    return '0 ملخصات, 0 فيديوهات, 0 PDFs, 0 صوتيات';
 }
 
 function getGradeName(grade) {
@@ -163,42 +180,54 @@ async function addContent() {
     }
 
     try {
-        let content;
+        let content = null;
+        let fileData = null;
+        let fileName = null;
+        let mimeType = null;
+
         if (type === 'summary') {
             const text = document.getElementById('textContent').value;
             if (!text) {
                 alert('يرجى إدخال المحتوى');
                 return;
             }
-            content = {
-                title,
-                content: text,
-                type: 'summary',
-                createdAt: new Date().toISOString()
-            };
-            const key = subject + '_summaries';
-            let arr = JSON.parse(localStorage.getItem(key)) || [];
-            arr.push(content);
-            localStorage.setItem(key, JSON.stringify(arr));
+            content = text;
         } else {
             const file = document.getElementById('contentFile').files[0];
             if (!file) {
                 alert('يرجى اختيار ملف');
                 return;
             }
-            const dataUrl = await fileToDataUrl(file);
-            const key = subject + '_' + type + 's';
-            let list = JSON.parse(localStorage.getItem(key)) || [];
-            list.push({ name: file.name, url: dataUrl, title, type, mime: file.type || "" });
-            localStorage.setItem(key, JSON.stringify(list));
+            fileData = await fileToDataUrl(file);
+            fileName = file.name;
+            mimeType = file.type || "";
         }
 
-        alert('تم إضافة المحتوى بنجاح!');
-        document.getElementById('contentTitle').value = '';
-        document.getElementById('textContent').value = '';
-        document.getElementById('contentFile').value = '';
-        loadDashboardStats();
-        loadMySubjects();
+        const response = await fetch('/api/teacher/content', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                subject,
+                type,
+                title,
+                content,
+                fileData,
+                fileName,
+                mimeType
+            })
+        });
+
+        if (response.ok) {
+            alert('تم إضافة المحتوى بنجاح!');
+            document.getElementById('contentTitle').value = '';
+            document.getElementById('textContent').value = '';
+            document.getElementById('contentFile').value = '';
+            loadDashboardStats();
+            loadMySubjects();
+        } else {
+            const error = await response.json();
+            alert(error.error || 'خطأ في إضافة المحتوى');
+        }
     } catch (error) {
         console.error('Add content error:', error);
         alert('خطأ في إضافة المحتوى');

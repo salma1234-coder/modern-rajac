@@ -64,7 +64,7 @@ const apiLimiter = rateLimit({
 
 // Database setup
 const adapter = new JSONFile(path.join(root, "database.json"));
-const db = new Low(adapter, { users: [], loginRecords: [], failedAttempts: {}, subjects: [] });
+const db = new Low(adapter, { users: [], loginRecords: [], failedAttempts: {}, subjects: [], content: [] });
 
 // Initialize database
 db.read().then(() => {
@@ -72,6 +72,7 @@ db.read().then(() => {
     if (!db.data.loginRecords) db.data.loginRecords = [];
     if (!db.data.failedAttempts) db.data.failedAttempts = {};
     if (!db.data.subjects) db.data.subjects = [];
+    if (!db.data.content) db.data.content = [];
     db.write();
 }).catch(err => {
     console.error("Database initialization error:", err);
@@ -317,6 +318,124 @@ app.get("/api/teacher/subjects", apiLimiter, isTeacher, async (req, res) => {
         res.json({ subjects });
     } catch (error) {
         console.error("Get teacher subjects error:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
+// Teacher: Add content
+app.post("/api/teacher/content", apiLimiter, isTeacher, async (req, res) => {
+    try {
+        const { subject, type, title, content, fileData, fileName, mimeType } = req.body;
+
+        if (!subject || !type || !title) {
+            return res.status(400).json({ error: "Subject, type, and title are required" });
+        }
+
+        await db.read();
+        const teacher = db.data.users.find(u => u.id === req.session.userId);
+        
+        if (!teacher || teacher.role !== 'teacher') {
+            return res.status(403).json({ error: "Unauthorized" });
+        }
+
+        // Verify teacher is assigned to this subject
+        if (!teacher.subjects.includes(subject)) {
+            return res.status(403).json({ error: "You are not assigned to this subject" });
+        }
+
+        const newContent = {
+            id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
+            subject,
+            type,
+            title,
+            content: content || null,
+            fileData: fileData || null,
+            fileName: fileName || null,
+            mimeType: mimeType || null,
+            teacherId: teacher.id,
+            teacherName: teacher.fullName,
+            createdAt: new Date().toISOString()
+        };
+
+        db.data.content.push(newContent);
+        await db.write();
+
+        res.json({ success: true, content: newContent });
+    } catch (error) {
+        console.error("Add content error:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
+// Teacher: Get content by subject
+app.get("/api/teacher/content", apiLimiter, isTeacher, async (req, res) => {
+    try {
+        const { subject } = req.query;
+
+        await db.read();
+        const teacher = db.data.users.find(u => u.id === req.session.userId);
+        
+        if (!teacher || teacher.role !== 'teacher') {
+            return res.status(403).json({ error: "Unauthorized" });
+        }
+
+        let content = db.data.content.filter(c => c.teacherId === teacher.id);
+        
+        if (subject) {
+            content = content.filter(c => c.subject === subject);
+        }
+
+        res.json({ content });
+    } catch (error) {
+        console.error("Get content error:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
+// Teacher: Delete content
+app.delete("/api/teacher/content/:contentId", apiLimiter, isTeacher, async (req, res) => {
+    try {
+        const { contentId } = req.params;
+
+        await db.read();
+        const teacher = db.data.users.find(u => u.id === req.session.userId);
+        
+        if (!teacher || teacher.role !== 'teacher') {
+            return res.status(403).json({ error: "Unauthorized" });
+        }
+
+        const contentIndex = db.data.content.findIndex(c => c.id === contentId && c.teacherId === teacher.id);
+
+        if (contentIndex === -1) {
+            return res.status(404).json({ error: "Content not found" });
+        }
+
+        db.data.content.splice(contentIndex, 1);
+        await db.write();
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error("Delete content error:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
+// Public: Get content by subject (for students)
+app.get("/api/content", async (req, res) => {
+    try {
+        const { subject } = req.query;
+
+        await db.read();
+        
+        let content = db.data.content;
+        
+        if (subject) {
+            content = content.filter(c => c.subject === subject);
+        }
+
+        res.json({ content });
+    } catch (error) {
+        console.error("Get content error:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 });
