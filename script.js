@@ -868,32 +868,41 @@ function backToSubjects() {
 // =====================
 // تسجيل دخول الأدمن
 // =====================
-function loginAdmin() {
+async function loginAdmin() {
     const name = document.getElementById("adminName").value.trim();
     const pass = document.getElementById("adminPass").value.trim();
-    let found = null;
-
-    for (let grade in subjects) {
-        found = subjects[grade].find(sub => sub.admin === name && sub.password === pass);
-        if (found) break;
-    }
-
     const loginMsg = document.getElementById("loginMsg");
-    if (found) {
-        currentMaterial = found.name;
-        currentTest = parseTestFromStorage(currentMaterial);
-        if (loginMsg) {
-            loginMsg.textContent = "";
-            loginMsg.classList.remove("form-msg--error");
+
+    try {
+        const response = await fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: name, password: pass })
+        });
+
+        if (response.ok) {
+            const user = await response.json();
+            if (user.role === 'teacher') {
+                window.location.href = 'teacher.html';
+            } else if (user.role === 'admin') {
+                window.location.href = 'admin.html';
+            } else {
+                if (loginMsg) {
+                    loginMsg.textContent = "غير مصرح لك بالوصول";
+                    loginMsg.classList.add("form-msg--error");
+                }
+            }
+        } else {
+            const error = await response.json();
+            if (loginMsg) {
+                loginMsg.textContent = error.error || "اسم المستخدم أو كلمة المرور غير صحيحة";
+                loginMsg.classList.add("form-msg--error");
+            }
         }
-        document.getElementById("adminLoginSection").style.display = "none";
-        document.getElementById("adminPanel").style.display = "block";
-        document.getElementById("panelTitle").innerText = `لوحة المادة: ${currentMaterial}`;
-        loadStudentsTable();
-        updateAdminStats();
-    } else {
+    } catch (error) {
+        console.error('Login error:', error);
         if (loginMsg) {
-            loginMsg.textContent = "اسم المعلّم أو كلمة المرور غير صحيحة.";
+            loginMsg.textContent = "خطأ في الاتصال بالخادم";
             loginMsg.classList.add("form-msg--error");
         }
     }

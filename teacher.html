@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم المعلم</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header__content">
+            <h1 class="header__title">لوحة تحكم المعلم</h1>
+            <div class="header__actions">
+                <span id="teacherName">المعلم</span>
+                <button onclick="logout()" class="btn btn--secondary">تسجيل خروج</button>
+                <a href="SS.html" class="btn btn--primary">العودة للمنصة</a>
+            </div>
+        </div>
+    </header>
+
+    <nav class="admin-nav">
+        <button class="active" onclick="showSection('dashboard')">لوحة المعلومات</button>
+        <button onclick="showSection('my-subjects')">موادي</button>
+        <button onclick="showSection('add-content')">إضافة محتوى</button>
+        <button onclick="showSection('students')">الطلاب</button>
+    </nav>
+
+    <!-- Dashboard Section -->
+    <section id="dashboard" class="admin-section active">
+        <h2>لوحة المعلومات</h2>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3 id="totalSubjects">0</h3>
+                <p>مواد مسندة</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="totalStudents">0</h3>
+                <p>عدد الطلاب</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="totalContent">0</h3>
+                <p>المحتوى التعليمي</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- My Subjects Section -->
+    <section id="my-subjects" class="admin-section">
+        <h2>موادي</h2>
+        <div id="subjectsList" class="subjects-grid">
+            <p>جاري التحميل...</p>
+        </div>
+    </section>
+
+    <!-- Add Content Section -->
+    <section id="add-content" class="admin-section">
+        <h2>إضافة محتوى تعليمي</h2>
+        
+        <div class="form-group">
+            <label for="contentSubject">المادة *</label>
+            <select id="contentSubject" required>
+                <option value="">اختر المادة</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="contentType">نوع المحتوى *</label>
+            <select id="contentType" required>
+                <option value="">اختر النوع</option>
+                <option value="summary">ملخص</option>
+                <option value="video">فيديو</option>
+                <option value="pdf">ملف PDF</option>
+                <option value="audio">ملف صوتي</option>
+            </select>
+        </div>
+
+        <div class="form-group" id="textContentGroup" style="display: none;">
+            <label for="textContent">المحتوى *</label>
+            <textarea id="textContent" rows="5"></textarea>
+        </div>
+
+        <div class="form-group" id="fileContentGroup" style="display: none;">
+            <label for="contentFile">الملف *</label>
+            <input type="file" id="contentFile">
+        </div>
+
+        <div class="form-group">
+            <label for="contentTitle">العنوان *</label>
+            <input type="text" id="contentTitle" required>
+        </div>
+
+        <button onclick="addContent()" class="btn btn--primary">إضافة المحتوى</button>
+    </section>
+
+    <!-- Students Section -->
+    <section id="students" class="admin-section">
+        <h2>الطلاب</h2>
+        
+        <div class="form-group">
+            <label for="studentSubject">المادة</label>
+            <select id="studentSubject" onchange="loadStudents()">
+                <option value="">كل المواد</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="studentGrade">الصف</label>
+            <select id="studentGrade" onchange="loadStudents()">
+                <option value="">كل الصفوف</option>
+                <option value="first">الصف الأول</option>
+                <option value="second">الصف الثاني</option>
+                <option value="third">الصف الثالث</option>
+            </select>
+        </div>
+
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>اسم الطالب</th>
+                    <th>الصف</th>
+                    <th>الفصل</th>
+                    <th>وقت الدراسة</th>
+                    <th>آخر نشاط</th>
+                </tr>
+            </thead>
+            <tbody id="studentsTableBody">
+                <tr>
+                    <td colspan="5" style="text-align: center;">جاري التحميل...</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <script src="teacher.js"></script>
+</body>
+</html>

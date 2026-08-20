@@ -105,6 +105,15 @@ app.get("/admin.html", (req, res) => {
     }
 });
 
+// Protect teacher page - redirect to login if not authenticated
+app.get("/teacher.html", (req, res) => {
+    if (req.session.userId && req.session.role === 'teacher') {
+        res.sendFile(path.join(root, "teacher.html"));
+    } else {
+        res.redirect("/SS.html");
+    }
+});
+
 // Middleware to check if user is authenticated
 const isAuthenticated = (req, res, next) => {
     if (req.session.userId) {
@@ -664,6 +673,26 @@ app.get("/api/teacher/students", apiLimiter, isTeacher, async (req, res) => {
         res.json({ students });
     } catch (error) {
         console.error("Get students error:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
+// Teacher: Get their subjects
+app.get("/api/teacher/subjects", apiLimiter, isTeacher, async (req, res) => {
+    try {
+        await db.read();
+        const teacher = db.data.users.find(u => u.id === req.session.userId);
+        
+        if (!teacher || teacher.role !== 'teacher') {
+            return res.status(403).json({ error: "Unauthorized" });
+        }
+
+        const teacherSubjects = teacher.subjects || [];
+        const subjects = db.data.subjects.filter(s => teacherSubjects.includes(s.name));
+
+        res.json({ subjects });
+    } catch (error) {
+        console.error("Get teacher subjects error:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 });
